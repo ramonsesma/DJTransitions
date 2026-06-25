@@ -48,7 +48,7 @@ DJTransitions.renderFrames(\filterSweep, 4, 30);
 ## Install
 
 ```supercollider
-Quarks.install("https://github.com/studio-sesma/DJTransitions");
+Quarks.install("https://github.com/ramonsesma/DJTransitions");
 ```
 
 ## Test
