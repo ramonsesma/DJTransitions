@@ -1,0 +1,11 @@
+(
+    name: "DJTransitions",
+    summary: "DJ transition recipes (bass swap, full crossfade, filter sweep, doublestop, scribble) — automate any two channel-strip Synths over a chosen window.",
+    version: "0.1.0",
+    schelp: "DJTransitions",
+    isCompatible: { true },
+    dependencies: [],
+    author: "Studio Sesma",
+    url: "https://github.com/studio-sesma/DJTransitions",
+    license: "MIT"
+)

@@ -1,0 +1,39 @@
+CLASS:: DJTransition
+summary:: Abstract base class for DJ transition recipes.
+categories:: Quarks>DJTransitions
+related:: Classes/DJTransitions, Classes/DJTransitionBassSwap, Classes/DJTransitionFullCrossfade, Classes/DJTransitionFilterSweep, Classes/DJTransitionDoublestop, Classes/DJTransitionScribble
+
+DESCRIPTION::
+Subclass and override code::*curve:: (and optionally code::*prepare:: / code::*finalise::) to define a new transition recipe. The base class handles scheduling the curve at a configurable frame rate inside a Routine and applying each frame to the two Synths via code::.set::.
+
+code::
+MyFadeOnly : DJTransition {
+    *curve { |t|
+        ^( a: ( level: 1 - t ), b: ( level: t ) )
+    }
+}
+
+MyFadeOnly.play(~deckA, ~deckB, 6);
+::
+
+CLASSMETHODS::
+
+METHOD:: curve
+strong::Abstract — subclasses must implement.::
+
+ARGUMENT:: t
+Normalised time, 0 = transition start, 1 = transition end.
+
+returns:: An Event code::( a: ( ctrlSym: value, ... ), b: ( ... ) ):: with the control values to apply this frame. Either side may be nil.
+
+METHOD:: prepare
+Hook called once before the curve starts. Subclasses can set static parameters that don't need to animate (e.g. enabling a filter type, killing one band on deck B).
+
+METHOD:: finalise
+Hook called once after the curve completes. Subclasses can silence A, restore default filter state, etc.
+
+METHOD:: play
+Run the transition. Returns the Routine.
+
+METHOD:: renderFrames
+Sample the curve into an Array of Events without scheduling.

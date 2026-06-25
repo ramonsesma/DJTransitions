@@ -1,0 +1,75 @@
+CLASS:: DJTransitions
+summary:: Five DJ transition recipes that automate any two channel-strip Synths over a chosen window.
+categories:: Quarks>DJTransitions
+related:: Classes/DJTransition, Classes/DJTransitionBassSwap, Classes/DJTransitionFullCrossfade
+
+DESCRIPTION::
+Facade over the bundled transition subclasses. Each style automates two Synths' channel-strip controls (level, lo, mid, hi, cutoff, …) over a window with a chosen frame rate. Pick a style by Symbol:
+
+table::
+## strong::\bassSwap::     || A's bass falls / B's bass rises; both decks at full level. Classic for continuous-kick genres.
+## strong::\fullCrossfade:: || Equal-power square-root level crossfade.
+## strong::\filterSweep::  || A LPF closes from 18 kHz → 400 Hz; B opens with the opposite sweep.
+## strong::\doublestop::   || Hold both decks near full, hand off A in the last 15 % of the window.
+## strong::\scribble::     || Quick alternating chops between A and B, density rising as B wins out.
+::
+
+The transitions are agnostic to the synth definitions — they just call code::.set:: on the two Synth instances you provide. Control names default to the Studio Sesma DJ engine's vocabulary (code::\level::, code::\lo::, code::\mid::, code::\hi::, code::\cutoff::, code::\filterType::). Subclass one of the bundled transitions and override code::*curve:: if your channel strip uses different names.
+
+code::
+~deckA = Synth(\webDjDeckStereo, [\bufnum, bufA, \level, 1]);
+~deckB = Synth(\webDjDeckStereo, [\bufnum, bufB, \level, 0]);
+
+~routine = DJTransitions.play(\bassSwap, ~deckA, ~deckB, 4);
+~routine.stop;   // bail early if needed
+::
+
+CLASSMETHODS::
+
+METHOD:: play
+Run a transition.
+
+ARGUMENT:: style
+Symbol from code::names::.
+
+ARGUMENT:: synthA
+The Synth that is currently audible (the outgoing track).
+
+ARGUMENT:: synthB
+The incoming Synth.
+
+ARGUMENT:: durationSec
+Length of the transition window in seconds (default 4).
+
+ARGUMENT:: clock
+Clock to schedule on. Defaults to code::TempoClock.default::.
+
+ARGUMENT:: fps
+How often the curve is sampled (default 30).
+
+returns:: The Routine driving the transition — code::.stop:: to bail early.
+
+METHOD:: renderFrames
+Sample the curve into an Array of frames without scheduling on a Server. Each frame is an Event code::(time:, t:, frame: (a: ..., b: ...))::. Useful for tests, NRT scoring, or piping the same plan to a Pbind.
+
+ARGUMENT:: style
+Same as code::play::.
+
+ARGUMENT:: durationSec
+Same as code::play::.
+
+ARGUMENT:: fps
+Same as code::play::.
+
+returns:: An Array of Events.
+
+METHOD:: names
+Sorted Array of registered style Symbols.
+
+METHOD:: classFor
+Lookup the subclass behind a style.
+
+ARGUMENT:: style
+A Symbol.
+
+returns:: A Class or nil.
