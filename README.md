@@ -1,6 +1,13 @@
-# DJTransitions
+﻿# DJTransitions
 
-A SuperCollider quark with five DJ transition recipes — bass swap, full
+![SuperCollider Quarks cover](assets/supercollider-quarks-cover.png)
+
+[![Release](https://img.shields.io/github/v/release/ramonsesma/DJTransitions)](https://github.com/ramonsesma/DJTransitions/releases)
+[![Validate](https://img.shields.io/github/actions/workflow/status/ramonsesma/DJTransitions/validate.yml?branch=main&label=validate)](https://github.com/ramonsesma/DJTransitions/actions/workflows/validate.yml)
+[![License](https://img.shields.io/github/license/ramonsesma/DJTransitions)](https://github.com/ramonsesma/DJTransitions/blob/main/LICENSE)
+[![Quark](https://img.shields.io/badge/quark-0.1.0-blue)](https://github.com/ramonsesma/DJTransitions/releases/tag/0.1.0)
+
+A SuperCollider quark with five DJ transition recipes â€” bass swap, full
 crossfade, filter sweep, doublestop, and scribble. Each automates two
 channel-strip `Synth` instances over a window via per-frame `.set` calls
 on a Routine.
@@ -10,12 +17,12 @@ on a Routine.
 | Class | Style |
 |---|---|
 | `DJTransitionBassSwap` | A's `\lo` falls / B's `\lo` rises; both decks at full level. |
-| `DJTransitionFullCrossfade` | Equal-power √ level crossfade. |
-| `DJTransitionFilterSweep` | A LPF closes 18 kHz → 400 Hz; B opens with the opposite log sweep. |
+| `DJTransitionFullCrossfade` | Equal-power âˆš level crossfade. |
+| `DJTransitionFilterSweep` | A LPF closes 18 kHz â†’ 400 Hz; B opens with the opposite log sweep. |
 | `DJTransitionDoublestop` | Hold both decks near full, hand off A in the last 15 %. |
 | `DJTransitionScribble` | Quick alternating chops, density rising as B wins. |
-| `DJTransitions` | Facade — `.play(:style, deckA, deckB, durationSec)`. |
-| `DJTransition` | Abstract base — subclass and override `*curve(t)` for new recipes. |
+| `DJTransitions` | Facade â€” `.play(:style, deckA, deckB, durationSec)`. |
+| `DJTransition` | Abstract base â€” subclass and override `*curve(t)` for new recipes. |
 
 ## Contract
 
@@ -41,7 +48,7 @@ Subclass and override `*curve` if your strip uses different names.
 // ... or bail early:
 ~routine.stop;
 
-// No server needed — render the automation curve to an array:
+// No server needed â€” render the automation curve to an array:
 DJTransitions.renderFrames(\filterSweep, 4, 30);
 ```
 
@@ -65,7 +72,7 @@ Or inside sclang after loading the Quark classes:
 TestDJTransitions.run;
 ```
 
-`renderFrames` powers most of the tests — no scsynth needed to verify
+`renderFrames` powers most of the tests â€” no scsynth needed to verify
 the curves.
 
 ## Notes
@@ -75,3 +82,4 @@ internally; this quark exposes them as reusable building blocks for any
 SC-based DJ rig or live-coding session.
 
 License: MIT.
+
